@@ -1,9 +1,9 @@
 {
-  "name": "skill-anti",
+  "name": "skills",
   "version": "1.0.0",
-  "description": "Initialize SkillAnti in your project",
+  "description": "Skill manager for Antigravity agents",
   "bin": {
-    "skill-anti": "./cli.js"
+    "skills": "./cli.js"
   },
   "engines": {
     "node": ">=16.0.0"

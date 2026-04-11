@@ -5,8 +5,9 @@ const path = require('path');
 
 const args = process.argv.slice(2);
 const command = args[0];
+const repo = args[1];
 
-if (command === 'init') {
+if (command === 'add' && repo === 'duyxyz/SkillAnti') {
   const source = path.join(__dirname, '.agents');
   const target = path.join(process.cwd(), '.agents');
 
@@ -18,12 +19,12 @@ if (command === 'init') {
   try {
     // Copy the .agents folder recursively to the current working directory
     fs.cpSync(source, target, { recursive: true, force: true });
-    console.log('Successfully initialized SkillAnti agents and skills in the current directory!');
+    console.log('Successfully added duyxyz/SkillAnti to the current directory!');
   } catch (err) {
-    console.error('Error initializing SkillAnti:', err.message);
+    console.error('Error adding SkillAnti:', err.message);
     process.exit(1);
   }
 } else {
-  console.log('SkillAnti CLI');
-  console.log('Usage: npx https://github.com/duyxyz/SkillAnti init');
+  console.log('Skills Manager CLI');
+  console.log('Usage: npx skills add duyxyz/SkillAnti');
 }
