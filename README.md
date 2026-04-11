@@ -1,19 +1,33 @@
 # SkillAnti
 
-Bộ công cụ hỗ trợ phát triển mã nguồn nhanh chóng và hiệu quả với các quy tắc và "skills" được định nghĩa sẵn cho trợ lý AI.
+Bộ công cụ quản lý **skills** cho AI Agent — giúp tải, cài đặt và kiểm soát các quy tắc hành vi của trợ lý AI trong dự án của bạn.
 
-## Tính năng nổi bật
+## Skills hiện có
 
-- **Strict Command Adherence**: Đảm bảo tuân thủ nghiêm ngặt các mệnh lệnh của người dùng mà không tự ý thay đổi logic hay giao diện.
-- **Concise Communication**: Giao tiếp ngắn gọn, súc tích và trực tiếp vào vấn đề.
-- **Commit History**: Tự động gợi ý tin nhắn commit bằng tiếng Việt theo các loại chuẩn (feat, fix, docs, refactor, v.v.).
+| Skill | Mô tả |
+|---|---|
+| `strict-protocol` | Tuân thủ nghiêm ngặt mệnh lệnh, giao tiếp súc tích và commit message chuẩn tiếng Việt |
+| `clean-code` | Phân tách logic 3 lớp, quy chuẩn đặt tên và kiểm thử bắt buộc (Web & App) |
+| `quality-control` | Truy vết lỗi, ghi log có cấu trúc, lập trình phòng vệ và checklist debug |
 
-## Cài đặt và sử dụng
-
-Bạn có thể dễ dàng khởi tạo SkillAnti trong bất kỳ dự án nào bằng lệnh `npx`:
+## Cài đặt
 
 ```bash
-npx https://github.com/duyxyz/SkillAnti init
+npx skills add duyxyz/SkillAnti
 ```
 
-Lệnh này sẽ tự động sao chép thư mục `.agents` và các "skills" cần thiết vào thư mục dự án của bạn để các AI agent có thể nhận diện và sử dụng ngay lập tức.
+Lệnh này sẽ tự động sao chép thư mục `.agents` và toàn bộ skills vào thư mục dự án để AI Agent nhận diện và sử dụng ngay.
+
+## Các lệnh CLI
+
+```bash
+# Tải và cài đặt skill từ GitHub
+npx skills add <user>/<repo>
+
+# Liệt kê các skill đã cài trong dự án hiện tại
+npx skills list
+```
+
+## Yêu cầu
+
+- Node.js >= 16.0.0
