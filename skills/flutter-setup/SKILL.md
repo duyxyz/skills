@@ -1,107 +1,67 @@
 ---
-name: flutter-android-native
-description: Use this skill for building Android-only Flutter applications. Triggers include: any Flutter project targeting Android exclusively, requests involving Material 3 setup, Flutter project structure, Android-specific configurations (permissions, intents), CI/CD with GitHub Actions for APK builds, or environment variable handling in Flutter. Also use when the user asks to scaffold, extend, or debug a Flutter Android app, set up VS Code for Flutter Android, or automate APK releases.
+name: flutter-android
+description: Flutter Android Native-First Development skill. Use when building Android-only Flutter apps with Material 3, setting up project structure, configuring CI/CD with GitHub Actions, or following service-first architecture patterns.
 ---
 
-This skill defines development patterns for building high-quality, Android-only Flutter applications using Material 3 and a standardized project structure.
-
+# Skill: Flutter Android Native-First Development
+This skill defines the development patterns for building high-quality, Android-only Flutter applications using Material 3 and a standardized project structure.
 ## Core Principles
-
-1. **Platform Focus**: The project is exclusively for Android. All development, testing, and configuration must target Android features (Material 3, Android Permissions, Intent filters, etc.).
-2. **UI/UX**: Strictly adhere to Material 3 (M3). Use `useMaterial3: true` in `ThemeData`. Prioritize AMOLED black or high-fidelity custom color schemes.
-3. **Project Organization**: Maintain a clean, modular directory structure for scalability.
-
+1.  **Platform Focus**: The project is exclusively for Android. All development, testing, and configuration must target Android features (Material 3, Android Permissions, Intent filters, etc.).
+2.  **UI/UX**: Strictly adhere to Material 3 (M3). Use `useMaterial3: true` in the `ThemeData`. Prioritize AMOLED black or high-fidelity custom color schemes.
+3.  **Project Organization**: Maintain a clean, modular directory structure for scalability.
 ## Directory Structure
-
 All source code resides in `lib/`, organized as follows:
-
-- `lib/screens/` — Full-page widgets (e.g., `home_screen.dart`)
-- `lib/tabs/` — Separate tabs for `BottomNavigationBar` or `PageView` (e.g., `home_tab.dart`, `settings_tab.dart`)
-- `lib/widgets/` — Reusable UI components (e.g., `custom_card.dart`, `loading_overlay.dart`)
-- `lib/services/` — Logic for external APIs, databases (Supabase, Firebase), or local storage (e.g., `github_service.dart`)
-- `lib/utils/` — Helper functions, constants, and extensions (e.g., `app_colors.dart`, `format_helper.dart`)
-- `lib/assets/` — Media assets managed within `lib/` for better visibility
-
+- `lib/screens/`: Full-page widgets (e.g., `home_screen.dart`).
+- `lib/tabs/`: Separate tabs if using a BottomNavigationBar or PageView (e.g., `home_tab.dart`, `settings_tab.dart`).
+- `lib/widgets/`: Reusable UI components (e.g., `custom_card.dart`, `loading_overlay.dart`).
+- `lib/services/`: Logic for external APIs, databases (Supabase, Firebase), or local storage (e.g., `github_service.dart`).
+- `lib/utils/`: Helper functions, constants, and extensions (e.g., `app_colors.dart`, `format_helper.dart`).
+- `lib/assets/`: Media assets managed within the `lib` folder for better visibility (optional, but consistent with current project).
 ## Architecture and Logic
-
-**Service-First Architecture**:
-- All business logic (APIs, database interactions, shared preferences) **MUST** reside in `lib/services/`.
-- Widgets and Screens should only call methods from services and never handle low-level data fetching directly.
-
-**Environment Variables**:
-- Sensitive information (API Keys, Supabase URL, GitHub Tokens) **MUST NOT** be hard-coded.
-- Use a `.env` file with the `flutter_dotenv` package, or `--dart-define` for secrets.
-- Ensure `.env` is added to `.gitignore`.
-
+1.  **Service-First Architecture**:
+    - All business logic (APIs, Database interactions, shared preferences) **MUST** reside in `lib/services/`.
+    - Widgets and Screens should only call methods from services and never handle low-level data fetching directly.
+2.  **Environment Variables**:
+    - Sensitive information (API Keys, Supabase URL, GitHub Tokens) **MUST NOT** be hard-coded.
+    - Use a `.env` file and the `flutter_dotenv` package or `dart-define` for secrets.
+    - Ensure `.env` is added to `.gitignore`.
+## CI/CD and Automation
+1.  **GitHub Actions**:
+    - Maintain a `.github/workflows/build_apk.yml` for automated releases.
+    - This workflow should trigger manually (`workflow_dispatch`) to build and upload release APKs (e.g., `v1.0.X`).
+2.  **Asset Registration**:
+    - When adding new images or fonts to `lib/assets/`, ensure they are automatically registered in the `flutter: assets:` section of `pubspec.yaml`.
 ## Development Guidelines
-
-### 1. Project Initialization
-
+### 1. Initialization
+When starting a new project, use:
 ```bash
 flutter create --platforms android .
 ```
-
 This ensures no `ios`, `macos`, `web`, or other platform folders are created.
-
-### 2. Standard Material 3 Setup
-
-Always use `useMaterial3: true`. For AMOLED dark mode:
-
+### 2. Standard Material 3 setup
+Always use `useMaterial3: true` in `ThemeData`. For "AMOLED" mode, use:
 ```dart
 theme: ThemeData(
   useMaterial3: true,
-  scaffoldBackgroundColor: Colors.black,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.blue,
-    brightness: Brightness.dark,
-  ),
-),
+  scaffoldBackgroundColor: Colors.black, // True black
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue, brightness: Brightness.dark),
+)
 ```
-
 ### 3. VS Code Setup
-
-`.vscode/launch.json` must target Android explicitly:
-
+Ensure `.vscode/launch.json` is configured specifically for Android:
 ```json
 {
-  "configurations": [
-    {
-      "name": "Flutter Android",
-      "request": "launch",
-      "type": "dart",
-      "deviceId": "android"
-    }
-  ]
+  "name": "Flutter Android",
+  "request": "launch",
+  "type": "dart",
+  "deviceId": "android"
 }
 ```
-
 ### 4. Running the App
-
-```bash
-adb devices                        # Check connected devices
-emulator -avd <avd_name>           # Start emulator if needed
-flutter run                        # Run the app
-```
-
-## CI/CD and Automation
-
-**GitHub Actions** (`build_apk.yml`):
-- Trigger: `workflow_dispatch` (manual)
-- Output: Release APKs uploaded as artifacts or GitHub releases (e.g., `v1.0.X`)
-- Maintain this workflow in `.github/workflows/build_apk.yml`
-
-**Asset Registration**:
-- When adding new images or fonts to `lib/assets/`, register them in `pubspec.yaml`:
-
-```yaml
-flutter:
-  assets:
-    - lib/assets/images/
-    - lib/assets/fonts/
-```
-
+1.  Check for devices: `adb devices`
+2.  If no device found, start the first emulator: `emulator -avd <name>`
+3.  Run app: `flutter run`
 ## AI Response Pattern
-
-- **Code generation**: Always place logic in `lib/services/`, not in widgets or screens.
-- **Security check**: If the user hard-codes API keys or tokens, remind them to use `.env` + `flutter_dotenv` and add `.env` to `.gitignore`.
-- **Build support**: If the user asks for a release build, guide them to trigger the `build_apk.yml` GitHub Actions workflow via `workflow_dispatch`.
+- **Code Generation**: Ensure logic is in `services/`.
+- **Security Check**: Remind the user about `.env` if they hard-code keys.
+- **Build Support**: If the user asks for a build, guide them to use the `build_apk.md` workflow.
